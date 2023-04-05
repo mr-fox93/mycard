@@ -1,6 +1,5 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,10 +7,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Switch from "@mui/material/Switch";
 
 function App() {
   const [array, setArray] = useState([]);
   const [search, setSearch] = useState("");
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     fetch("https://randomuser.me/api/?results=20")
@@ -32,17 +33,24 @@ function App() {
   });
 
   return (
-    <div className="App">
-      <div className="header">
+    <div className={`App ${isDarkMode ? "dark" : ""}`}>
+      <div className={`header ${isDarkMode ? "dark" : ""}`}>
         <input
           placeholder="search..."
-          className="input"
+          className={`input ${isDarkMode ? "dark" : ""}`}
           type={"text"}
           onChange={handleChange}
           value={search}
         ></input>
+        <Switch
+          checked={isDarkMode}
+          onChange={() => setIsDarkMode(!isDarkMode)}
+        />
       </div>
-      <TableContainer className="table" component={Paper}>
+      <TableContainer
+        className={`table ${isDarkMode ? "dark" : ""}`}
+        component={Paper}
+      >
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -54,7 +62,9 @@ function App() {
           <TableBody>
             {filterData.map((item) => (
               <TableRow key={item.login.uuid}>
-                <TableCell>{item.name.first}</TableCell>
+                <TableCell className={`tb ${isDarkMode ? "dark" : ""}`}>
+                  {item.name.first}
+                </TableCell>
                 <TableCell>{item.name.last}</TableCell>
                 <TableCell>{item.dob.age}</TableCell>
               </TableRow>
